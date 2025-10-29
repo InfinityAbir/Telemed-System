@@ -6,9 +6,9 @@ It connects doctors and patients for **virtual consultations**, enabling feature
 ---
 ## 📸 Screenshots
 
-| Home Page | Doctor Dashboard | Appointment View |
-|------------|------------------|-------------------|
-| ![Home](screenshots/home.png) | ![Doctor Dashboard](screenshots/doctor-dashboard.png) | ![Appointment](screenshots/appointment.png) |
+![Home](screenshots/home.png)
+![Doctor Dashboard](screenshots/doctor-dashboard.png)
+![Appointment](screenshots/appointment.png)
 
 ---
 
