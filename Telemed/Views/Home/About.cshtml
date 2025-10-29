@@ -1,0 +1,239 @@
+﻿@{
+    ViewData["Title"] = "About Us - TeleMed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f8f9fa;
+    }
+
+    /* Hero Section */
+    .about-hero {
+        background: linear-gradient(135deg, #007bff, #00c9a7);
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+        border-radius: 0 0 50px 50px;
+    }
+
+        .about-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .about-hero p {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+    /* Sections */
+    .about-section {
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+        .about-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #007bff;
+        }
+
+        .about-section p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #555;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 40px;
+        }
+
+    /* Cards */
+    .feature-card, .team-card {
+        background: white;
+        border-radius: 20px;
+        padding: 25px 20px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .feature-card:hover, .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: #00c9a7;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h4 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .team-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+    /* Stats */
+    .stats-section {
+        background: linear-gradient(135deg, #00c9a7, #007bff);
+        color: white;
+        text-align: center;
+        padding: 60px 20px;
+        border-radius: 20px;
+        margin-bottom: 50px;
+    }
+
+        .stats-section h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stats-section p {
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+    .stats-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+    }
+
+    .stat-item h4 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .stat-item p {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    @@media(max - width:768px) {
+        .stats-grid
+
+    {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    }
+</style>
+
+<main>
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="logo mb-3">
+                <i class="fas fa-heartbeat text-danger"></i>
+                <span style="font-size:2rem; font-weight:700;">TeleMed</span>
+            </div>
+            <h1>About TeleMed</h1>
+            <p>Your trusted online healthcare partner</p>
+            <p class="fst-italic">“Bringing healthcare closer to you, wherever you are.”</p>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="about-section">
+        <h2>Our Mission</h2>
+        <p>To provide accessible, affordable, and high-quality healthcare services to everyone, anywhere, through innovative online solutions.</p>
+
+        <h2>Our Vision</h2>
+        <p>To be the most trusted platform connecting patients and licensed medical professionals globally, ensuring better health outcomes.</p>
+
+        <h2>Our Values</h2>
+        <p>Integrity, Compassion, Innovation, and Reliability guide every interaction we have with our patients and doctors.</p>
+    </section>
+
+    <!-- Features / Why Choose Us -->
+    <section class="about-section">
+        <h2>Why Choose TeleMed?</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="bi bi-person-video3"></i>
+                    <h4>Video Consultation</h4>
+                    <p>Connect with certified doctors online from the comfort of your home.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="bi bi-shield-check"></i>
+                    <h4>Verified Doctors</h4>
+                    <p>All our healthcare professionals are thoroughly verified and licensed.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="bi bi-cash-coin"></i>
+                    <h4>Affordable Care</h4>
+                    <p>High-quality medical consultations that are easy on your wallet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4>500+</h4>
+                <p>Doctors</p>
+            </div>
+            <div class="stat-item">
+                <h4>10k+</h4>
+                <p>Consultations</p>
+            </div>
+            <div class="stat-item">
+                <h4>99%</h4>
+                <p>Patient Satisfaction</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="about-section">
+        <h2>Meet Our Team</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-3 col-6">
+                <div class="team-card">
+                    <img src="~/images/team1.png" alt="Dr. A">
+                    <h5>Dr. Zahidul Islam</h5>
+                    <p>Dermatology / Skin & STD diseases</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="team-card">
+                    <img src="~/images/team2.png" alt="Dr. B">
+                    <h5>Dr. Sayeef Hossain Khan</h5>
+                    <p>Internal Medicine / Multi-system specialist</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="team-card">
+                    <img src="~/images/team3.png" alt="Dr. C">
+                    <h5>Dr. Md. Moazzem Hossain</h5>
+                    <p>Diabetes Specialist</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

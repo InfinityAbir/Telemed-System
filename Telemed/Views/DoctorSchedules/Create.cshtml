@@ -1,0 +1,79 @@
+﻿@model Telemed.Models.DoctorScheduleMultiDayViewModel
+
+@{
+    ViewData["Title"] = "Create Schedule";
+}
+
+<h1 class="mb-4">Create Schedule</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert" style="max-width: 700px; margin: 20px auto;">
+        <i class="bi bi-check-circle-fill"></i> @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<form asp-action="Create" method="post" class="row g-3 needs-validation" novalidate>
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-6">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" class="form-control" type="date" required />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" class="form-control" type="date" required />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="StartTime" class="form-label"></label>
+        <input asp-for="StartTime" type="time" step="60" class="form-control" required />
+        <span asp-validation-for="StartTime" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="EndTime" class="form-label"></label>
+        <input asp-for="EndTime" type="time" step="60" class="form-control" required />
+        <span asp-validation-for="EndTime" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="MaxPatientsPerDay" class="form-label"></label>
+        <input asp-for="MaxPatientsPerDay" class="form-control" type="number" min="1" max="100" required />
+        <span asp-validation-for="MaxPatientsPerDay" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-8">
+        <label asp-for="VideoCallLink" class="form-label">Video Call Link (Optional)</label>
+        <input asp-for="VideoCallLink" class="form-control" placeholder="https://zoom.us/..." />
+        <span asp-validation-for="VideoCallLink" class="text-danger"></span>
+    </div>
+
+    <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary">Submit Schedules</button>
+        <a asp-action="MySchedules" class="btn btn-secondary ms-2">Back to My Schedules</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

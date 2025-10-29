@@ -1,0 +1,208 @@
+﻿@{
+    ViewData["Title"] = "TeleMed - Your Trusted Online Healthcare Partner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background: #f8f9fa !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Shared Hover Effect */
+    .hero, .about-section, .features, .quote-section {
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .hero:hover, .about-section:hover, .features:hover, .quote-section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, #007bff, #00c9a7);
+        color: white;
+        text-align: center;
+        padding: 80px 20px;
+        border-radius: 0 0 40px 40px;
+        margin-bottom: 50px;
+    }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .hero p.lead {
+            font-size: 1.3rem;
+            margin-top: 15px;
+        }
+
+    .consult-btn {
+        border-radius: 30px;
+        padding: 12px 35px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+        .consult-btn:hover {
+            transform: scale(1.1);
+            background-color: #28a745;
+            color: #fff;
+        }
+
+    /* About Section */
+    .about-section {
+        background: linear-gradient(135deg, #00c9a7, #007bff);
+        color: white;
+        text-align: center;
+        padding: 80px 20px;
+        border-radius: 20px;
+        margin-bottom: 50px;
+    }
+
+        .about-section h2 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .about-section p {
+            font-size: 1.2rem;
+            margin-top: 15px;
+        }
+
+    /* Features Section */
+    .features {
+        padding: 50px 20px;
+        margin: 50px auto;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+        .features .card {
+            border: none;
+            border-radius: 15px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #007bff, #00c9a7);
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .features .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            }
+
+        .features i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .features h4 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .features p {
+            color: #fff;
+            font-size: 1rem;
+        }
+
+    /* Quote Section */
+    .quote-section {
+        background: linear-gradient(135deg, #007bff, #00c9a7);
+        color: white;
+        font-style: italic;
+        padding: 40px 20px;
+        border-radius: 20px;
+        text-align: center;
+        margin: 50px auto;
+        max-width: 900px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+</style>
+
+<main role="main">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1><i class="fas fa-heartbeat me-2"></i>TeleMed</h1>
+        <p class="lead">Your trusted platform for online medical consultations</p>
+        <p class="fst-italic" style="font-size: 1.1rem;">“Bringing healthcare closer to you.”</p>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (User.IsInRole("Admin"))
+            {
+                <a href="@Url.Action("Report", "Admin")" class="btn btn-light consult-btn shadow-sm">
+                    View Report
+                </a>
+            }
+            else
+            {
+                <a href="@Url.Action("Index", "Doctors")" class="btn btn-light consult-btn shadow-sm">
+                    Book Consultation
+                </a>
+            }
+        }
+        else
+        {
+            <a href="@Url.Action("Login", "Account")" class="btn btn-light consult-btn shadow-sm">
+                Book Consultation
+            </a>
+        }
+    </section>
+
+
+
+    <!-- About Section -->
+    <section class="about-section container my-5 py-5 px-4 text-center">
+        <h2>About TeleMed</h2>
+        <p>
+            TeleMed is a secure and user-friendly platform that connects patients with licensed doctors
+            through online video consultations. Our mission is to make healthcare accessible,
+            affordable, and reliable for everyone, anywhere.
+        </p>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features container my-5">
+        <h2 class="fw-bold text-center mb-4">Why Choose TeleMed?</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="card text-center py-4">
+                    <i class="bi bi-person-video3 fs-1 mb-3"></i>
+                    <h4>Video Consultation</h4>
+                    <p>Consult experienced doctors anytime, from the comfort of your home.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center py-4">
+                    <i class="bi bi-shield-check fs-1 mb-3"></i>
+                    <h4>Verified Doctors</h4>
+                    <p>All our doctors are certified professionals with verified credentials.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center py-4">
+                    <i class="bi bi-cash-coin fs-1 mb-3"></i>
+                    <h4>Affordable Care</h4>
+                    <p>Quality healthcare shouldn’t break the bank — we make it affordable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="quote-section">
+        <h3>"The greatest wealth is health."</h3>
+    </section>
+
+</main>
