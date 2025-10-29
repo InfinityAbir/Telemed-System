@@ -1,128 +1,138 @@
 ﻿@model Telemed.ViewModels.AppointmentCreateViewModel
+
 @{
     ViewData["Title"] = "Book Appointment";
     var doctors = ViewBag.Doctors as IEnumerable<dynamic>;
+    bool isDoctorLocked = ViewBag.IsDoctorLocked ?? false;
+    int? selectedDoctorId = ViewBag.SelectedDoctorId;
 }
 
-<div class="container mt-4">
-    <h2>Book an Appointment</h2>
-    <hr />
+<h2 class="mb-4">@ViewData["Title"]</h2>
 
-    <form id="appointmentForm" asp-action="Create" method="post">
-        @Html.AntiForgeryToken()
+<form asp-action="Create" method="post" id="appointmentForm">
+    <!-- Doctor Selection -->
+    <div class="mb-3">
+        <label for="DoctorId" class="form-label">Select Doctor</label>
 
-        <div class="mb-3">
-            <label for="DoctorId" class="form-label">Select Doctor</label>
+        @if (isDoctorLocked)
+        {
+            <select id="DoctorId" name="DoctorId" class="form-select" disabled>
+                @foreach (var doc in doctors)
+                {
+                    if (selectedDoctorId == doc.DoctorId)
+                    {
+                        <option value="@doc.DoctorId" selected>@doc.FullName</option>
+                    }
+                    else
+                    {
+                        <option value="@doc.DoctorId">@doc.FullName</option>
+                    }
+                }
+            </select>
+            <input type="hidden" name="DoctorId" value="@selectedDoctorId" />
+        }
+        else
+        {
             <select id="DoctorId" name="DoctorId" class="form-select" required>
                 <option value="">-- Choose a Doctor --</option>
                 @foreach (var doc in doctors)
                 {
-                    <option value="@doc.DoctorId" data-fee="@doc.ConsultationFee">
-                        @doc.FullName
-                    </option>
+                    <option value="@doc.DoctorId">@doc.FullName</option>
                 }
             </select>
-        </div>
+        }
+    </div>
 
-        <div class="mb-3">
-            <label for="consultationFee" class="form-label">Consultation Fee</label>
-            <input type="text" id="consultationFee" class="form-control" value="0 BDT" readonly />
-        </div>
+    <!-- Date -->
+    <div class="mb-3">
+        <label for="AppointmentDate" class="form-label">Select Date</label>
+        <input type="date" id="AppointmentDate" class="form-control" required />
+    </div>
 
-        <div class="mb-3">
-            <label for="appointmentDate" class="form-label">Select Date</label>
-            <input type="date" id="appointmentDate" class="form-control" required />
-        </div>
+    <!-- Time Slots -->
+    <div class="mb-3">
+        <label for="TimeSlot" class="form-label">Available Time Slots</label>
+        <select id="TimeSlot" class="form-select" required>
+            <option value="">-- Select a Time Slot --</option>
+        </select>
+        <span class="text-muted" id="slotStatus"></span>
+    </div>
 
-        <div class="mb-3">
-            <label for="timeSlot" class="form-label">Available Time Slots</label>
-            <select id="timeSlot" class="form-select" required>
-                <option value="">-- Select a time slot --</option>
-            </select>
-        </div>
+    <!-- Consultation Fee -->
+    <div class="mb-3">
+        <label class="form-label">Consultation Fee</label>
+        <input type="text" id="ConsultationFee" class="form-control" readonly value="-" />
+    </div>
 
-        <input type="hidden" id="ScheduledAt" name="ScheduledAt" />
+    <!-- Patient Note -->
+    <div class="mb-3">
+        <label asp-for="PatientNote" class="form-label"></label>
+        <textarea asp-for="PatientNote" class="form-control" rows="3" placeholder="Optional short note about your visit"></textarea>
+        <span asp-validation-for="PatientNote" class="text-danger"></span>
+    </div>
 
-        <div class="mb-3">
-            <label asp-for="PatientNote" class="form-label"></label>
-            <textarea asp-for="PatientNote" class="form-control" rows="3"></textarea>
-        </div>
+    <!-- Hidden field to store full datetime -->
+    <input type="hidden" asp-for="ScheduledAt" id="ScheduledAt" />
 
-        <button type="submit" class="btn btn-primary">Book Appointment</button>
-    </form>
-
-    <div id="responseMessage" class="mt-3"></div>
-</div>
+    <button type="submit" class="btn btn-primary">Confirm Appointment</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        const doctorSelect = document.getElementById("DoctorId");
-        const dateInput = document.getElementById("appointmentDate");
-        const slotSelect = document.getElementById("timeSlot");
-        const scheduledAtHidden = document.getElementById("ScheduledAt");
-        const form = document.getElementById("appointmentForm");
-        const msgDiv = document.getElementById("responseMessage");
-        const feeInput = document.getElementById("consultationFee");
+        document.addEventListener("DOMContentLoaded", function () {
+            const doctorSelect = document.getElementById("DoctorId");
+            const dateInput = document.getElementById("AppointmentDate");
+            const slotSelect = document.getElementById("TimeSlot");
+            const slotStatus = document.getElementById("slotStatus");
+            const hiddenDateTime = document.getElementById("ScheduledAt");
+            const feeInput = document.getElementById("ConsultationFee");
 
-        async function fetchSlots() {
-            const doctorId = doctorSelect.value;
-            const date = dateInput.value;
+            async function loadSlots() {
+                const doctorId = doctorSelect.value;
+                const date = dateInput.value;
+                if (!doctorId || !date) return;
 
-            if (!doctorId || !date) {
-                slotSelect.innerHTML = `<option value="">-- Select a time slot --</option>`;
-                feeInput.value = "0 BDT";
-                return;
+                slotSelect.innerHTML = '<option>Loading...</option>';
+                slotStatus.textContent = '';
+                feeInput.value = '-';
+
+                try {
+                    const response = await fetch(`/Appointments/GetAvailableSlots?doctorId=${doctorId}&date=${date}`);
+                    const data = await response.json();
+
+                    slotSelect.innerHTML = '';
+                    if (!data.success) {
+                        slotSelect.innerHTML = '<option disabled>No available slots</option>';
+                        slotStatus.textContent = data.message || '';
+                        return;
+                    }
+
+                    data.slots.forEach(time => {
+                        const option = document.createElement("option");
+                        option.value = time;
+                        option.textContent = time;
+                        slotSelect.appendChild(option);
+                    });
+
+                    feeInput.value = data.fee ? `৳ ${data.fee}` : "-";
+                } catch (err) {
+                    slotSelect.innerHTML = '<option disabled>Error loading slots</option>';
+                }
             }
 
-            const response = await fetch(`/Appointments/GetAvailableSlots?doctorId=${doctorId}&date=${date}`);
-            const data = await response.json();
+            doctorSelect?.addEventListener("change", loadSlots);
+            dateInput.addEventListener("change", loadSlots);
 
-            slotSelect.innerHTML = "";
-            if (data.success) {
-                slotSelect.innerHTML = `<option value="">-- Select a time slot --</option>`;
-                data.slots.forEach(slot => {
-                    slotSelect.innerHTML += `<option value="${slot}">${slot}</option>`;
-                });
-
-                // Update consultation fee dynamically
-                feeInput.value = data.fee + " BDT";
-            } else {
-                slotSelect.innerHTML = `<option value="">${data.message}</option>`;
-                feeInput.value = "0 BDT";
-            }
-        }
-
-        doctorSelect.addEventListener("change", fetchSlots);
-        dateInput.addEventListener("change", fetchSlots);
-
-        slotSelect.addEventListener("change", () => {
-            const date = dateInput.value;
-            const time = slotSelect.value;
-            if (date && time) {
-                scheduledAtHidden.value = `${date}T${time}`;
-            }
-        });
-
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const response = await fetch(form.action, {
-                method: "POST",
-                body: formData
+            slotSelect.addEventListener("change", function () {
+                const date = dateInput.value;
+                const time = slotSelect.value;
+                if (date && time) {
+                    hiddenDateTime.value = `${date}T${time}`;
+                }
             });
-            const data = await response.json();
-
-            msgDiv.textContent = data.message;
-            msgDiv.className = data.success ? "text-success" : "text-danger";
-
-            if (data.success) {
-                form.reset();
-                slotSelect.innerHTML = `<option value="">-- Select a time slot --</option>`;
-                feeInput.value = "0 BDT";
-            }
         });
     </script>
 }

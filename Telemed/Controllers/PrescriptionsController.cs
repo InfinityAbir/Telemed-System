@@ -59,8 +59,13 @@ namespace Telemed.Controllers
                         .ThenInclude(p => p.User)
                     .Include(a => a.Doctor)
                         .ThenInclude(d => d.User)
-                    .Where(a => a.Status == AppointmentStatus.Approved),
-                "AppointmentId", "AppointmentId"
+                    .Where(a => a.Status == AppointmentStatus.Approved)
+                    .Select(a => new
+                    {
+                        a.AppointmentId,
+                        DisplayName = a.Patient.User.FullName + " - " + a.ScheduledAt.ToString("yyyy-MM-dd HH:mm")
+                    }),
+                "AppointmentId", "DisplayName"
             );
 
             return View();

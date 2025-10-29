@@ -191,17 +191,25 @@
                 <a href="@Url.Action("Create", "DoctorSchedules")"><i class="bi bi-clock"></i> Add Schedule</a>
                 <a href="@Url.Action("MySchedules", "DoctorSchedules")"><i class="bi bi-list-check"></i> My Schedules</a>
 
-                <!-- Presentations for Doctor -->
-                <a href="@Url.Action("Index", "Presentations")"><i class="bi bi-file-earmark-text"></i> View Presentations</a>
-                <a href="@Url.Action("Create", "Presentations")"><i class="bi bi-plus-square"></i> Upload Presentation</a>
+                <!-- Prescriptions -->
+                <a href="@Url.Action("Index", "Prescriptions")"><i class="bi bi-file-earmark-text"></i> View Prescriptions</a>
+                <a href="@Url.Action("Create", "Prescriptions")"><i class="bi bi-plus-square"></i> Add Prescription</a>
+
+                <!-- Payments for Doctor -->
+                <a href="@Url.Action("Index", "Payments")"><i class="bi bi-cash-stack"></i> View Payments</a>
             }
+
+
             else if (isPatient)
             {
                 <a href="@Url.Action("Index", "Appointments")"><i class="bi bi-calendar-check"></i> My Appointments</a>
                 <a href="@Url.Action("Create", "Appointments")"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
 
                 <!-- Presentations for Patient -->
-                <a href="@Url.Action("Index", "Presentations")"><i class="bi bi-file-earmark-text"></i> View Presentations</a>
+                <a href="@Url.Action("Index", "Prescriptions")"><i class="bi bi-file-earmark-text"></i> View Prescriptions</a>
+
+                <!-- Payments for Patient -->
+                <a href="@Url.Action("Index", "Payments")"><i class="bi bi-cash-stack"></i> My Payments</a>
             }
 
             <a href="@Url.Action("Profile", "Account")"><i class="bi bi-person-circle"></i> My Profile</a>

@@ -275,6 +275,42 @@ public class AppointmentsController : Controller
         return View(appointment);
     }
 
+    [Authorize(Roles = "Patient")]
+    [HttpGet]
+    public async Task<IActionResult> Book(int? doctorId)
+    {
+        var doctors = await _context.Doctors
+            .Include(d => d.User)
+            .Where(d => d.IsApproved)
+            .Select(d => new { d.DoctorId, FullName = d.User.FullName, d.ConsultationFee })
+            .ToListAsync();
+
+        ViewBag.Doctors = doctors;
+
+        var model = new AppointmentCreateViewModel
+        {
+            ScheduledAt = DateTime.Now.AddDays(1)
+        };
+
+        if (doctorId.HasValue)
+        {
+            // Preselect doctor and mark as fixed selection
+            model.DoctorId = doctorId.Value;
+            ViewBag.SelectedDoctorId = doctorId.Value;
+            ViewBag.IsDoctorLocked = true;
+        }
+        else
+        {
+            ViewBag.SelectedDoctorId = null;
+            ViewBag.IsDoctorLocked = false;
+        }
+
+        return View("Create", model);
+    }
+
+
+
+
     [HttpGet]
     public async Task<IActionResult> GetAvailableSlots(int doctorId, DateTime date)
     {
