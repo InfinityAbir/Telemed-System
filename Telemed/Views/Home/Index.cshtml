@@ -5,125 +5,385 @@
 
 <style>
     body {
-        background: #f8f9fa !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #ffffff !important;
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
         margin: 0;
         padding: 0;
+        color: #1a1a1a;
     }
 
-    /* Shared Hover Effect */
-    .hero, .about-section, .features, .quote-section {
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-        .hero:hover, .about-section:hover, .features:hover, .quote-section:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-
-    /* Hero Section */
+    /* Hero Section - Modern Doctime Style */
     .hero {
-        background: linear-gradient(135deg, #007bff, #00c9a7);
+        background: linear-gradient(135deg, #0066FF 0%, #00D4AA 100%);
         color: white;
-        text-align: center;
-        padding: 80px 20px;
-        border-radius: 0 0 40px 40px;
-        margin-bottom: 50px;
+        padding: 100px 20px 120px;
+        position: relative;
+        overflow: hidden;
     }
 
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 50%;
         }
 
-        .hero p.lead {
-            font-size: 1.3rem;
-            margin-top: 15px;
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent);
+            border-radius: 50%;
         }
+
+    .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero .brand-header {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
+        .hero .brand-header i {
+            font-size: 2.5rem;
+            color: #FF6B6B;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+    @@keyframes heartbeat {
+        0%, 100%
+
+    {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    }
+
+    .hero .brand-header h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -1px;
+    }
+
+    .hero .lead {
+        font-size: 1.4rem;
+        margin: 20px auto;
+        font-weight: 500;
+        max-width: 700px;
+        opacity: 0.95;
+    }
+
+    .hero .tagline {
+        font-size: 1.15rem;
+        font-style: italic;
+        opacity: 0.9;
+        margin-bottom: 40px;
+    }
 
     .consult-btn {
-        border-radius: 30px;
-        padding: 12px 35px;
+        background: white;
+        color: #0066FF;
+        border: none;
+        border-radius: 50px;
+        padding: 16px 48px;
         font-size: 1.1rem;
-        font-weight: 600;
-        transition: transform 0.3s, background-color 0.3s;
+        font-weight: 700;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
     }
 
         .consult-btn:hover {
-            transform: scale(1.1);
-            background-color: #28a745;
-            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            color: #0066FF;
+            background: #f8f9fa;
+        }
+
+        .consult-btn:active {
+            transform: translateY(-1px);
         }
 
     /* About Section */
     .about-section {
-        background: linear-gradient(135deg, #00c9a7, #007bff);
-        color: white;
-        text-align: center;
+        background: linear-gradient(135deg, #F9FAFB 0%, #E8F4FF 100%);
         padding: 80px 20px;
-        border-radius: 20px;
-        margin-bottom: 50px;
+        margin: 0;
+        border-radius: 0;
     }
 
-        .about-section h2 {
-            font-size: 3rem;
-            font-weight: 700;
-        }
+    .about-content {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
 
-        .about-section p {
-            font-size: 1.2rem;
-            margin-top: 15px;
-        }
+    .about-section h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 24px;
+        letter-spacing: -0.5px;
+    }
+
+    .about-section p {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: #555;
+        margin: 0;
+    }
 
     /* Features Section */
     .features {
-        padding: 50px 20px;
-        margin: 50px auto;
-        background: #fff;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        padding: 100px 20px;
+        margin: 0;
+        background: #ffffff;
     }
 
-        .features .card {
-            border: none;
-            border-radius: 15px;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #007bff, #00c9a7);
-            color: white;
-            transition: transform 0.3s, box-shadow 0.3s;
+    .features-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .features h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 60px;
+        color: #1a1a1a;
+        letter-spacing: -0.5px;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .feature-card {
+        background: white;
+        border: 2px solid #f0f0f0;
+        border-radius: 24px;
+        padding: 40px 32px;
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #0066FF, #00D4AA);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-            .features .card:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #0066FF;
+            box-shadow: 0 12px 40px rgba(0, 102, 255, 0.15);
+        }
+
+            .feature-card:hover::before {
+                transform: scaleX(1);
             }
 
-        .features i {
-            font-size: 3rem;
-            margin-bottom: 15px;
+        .feature-card .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #E8F4FF, #E0F9F4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            transition: all 0.3s ease;
         }
 
-        .features h4 {
-            font-weight: 600;
-            margin-bottom: 10px;
+        .feature-card:hover .icon-wrapper {
+            background: linear-gradient(135deg, #0066FF, #00D4AA);
         }
 
-        .features p {
-            color: #fff;
+        .feature-card .icon-wrapper i {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #0066FF, #00D4AA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .icon-wrapper i {
+            color: white;
+            -webkit-text-fill-color: white;
+        }
+
+        .feature-card h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
             font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin: 0;
         }
 
     /* Quote Section */
     .quote-section {
-        background: linear-gradient(135deg, #007bff, #00c9a7);
-        color: white;
-        font-style: italic;
-        padding: 40px 20px;
-        border-radius: 20px;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        padding: 80px 20px;
         text-align: center;
-        margin: 50px auto;
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+    }
+
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 15rem;
+            color: rgba(255, 255, 255, 0.05);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+    .quote-content {
         max-width: 900px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    .quote-section h3 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        font-style: italic;
+        color: white;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .quote-section .quote-author {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 20px;
+        font-style: normal;
+    }
+
+    /* Call to Action Section */
+    .cta-section {
+        background: linear-gradient(135deg, #0066FF 0%, #00D4AA 100%);
+        padding: 60px 20px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .cta-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .cta-section h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 16px;
+    }
+
+    .cta-section p {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 30px;
+    }
+
+    .cta-btn {
+        background: white;
+        color: #0066FF;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 40px;
+        font-size: 1rem;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: #f8f9fa;
+            color: #0066FF;
+        }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .hero
+
+    {
+        padding: 60px 20px 80px;
+    }
+
+    .hero .brand-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero .lead {
+        font-size: 1.1rem;
+    }
+
+    .about-section h2,
+    .features h2 {
+        font-size: 2rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quote-section h3 {
+        font-size: 1.6rem;
+    }
+
     }
 </style>
 
@@ -131,70 +391,77 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1><i class="fas fa-heartbeat me-2"></i>TeleMed</h1>
-        <p class="lead">Your trusted platform for online medical consultations</p>
-        <p class="fst-italic" style="font-size: 1.1rem;">“Bringing healthcare closer to you.”</p>
+        <div class="hero-content">
+            <div class="brand-header">
+                <i class="fas fa-heartbeat"></i>
+                <h1>TeleMed</h1>
+            </div>
+            <p class="lead">Your trusted platform for online medical consultations</p>
+            <p class="tagline">"Bringing healthcare closer to you."</p>
 
-        @if (User.Identity.IsAuthenticated)
-        {
-            if (User.IsInRole("Admin"))
+            @if (User.Identity.IsAuthenticated)
             {
-                <a href="@Url.Action("Report", "Admin")" class="btn btn-light consult-btn shadow-sm">
-                    View Report
-                </a>
+                if (User.IsInRole("Admin"))
+                {
+                    <a href="@Url.Action("Report", "Admin")" class="consult-btn">
+                        View Report
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Index", "Doctors")" class="consult-btn">
+                        Book Consultation
+                    </a>
+                }
             }
             else
             {
-                <a href="@Url.Action("Index", "Doctors")" class="btn btn-light consult-btn shadow-sm">
+                <a href="@Url.Action("Login", "Account")" class="consult-btn">
                     Book Consultation
                 </a>
             }
-        }
-        else
-        {
-            <a href="@Url.Action("Login", "Account")" class="btn btn-light consult-btn shadow-sm">
-                Book Consultation
-            </a>
-        }
+        </div>
     </section>
 
-
-
     <!-- About Section -->
-    <section class="about-section container my-5 py-5 px-4 text-center">
-        <h2>About TeleMed</h2>
-        <p>
-            TeleMed is a secure and user-friendly platform that connects patients with licensed doctors
-            through online video consultations. Our mission is to make healthcare accessible,
-            affordable, and reliable for everyone, anywhere.
-        </p>
+    <section class="about-section">
+        <div class="about-content">
+            <h2>About TeleMed</h2>
+            <p>
+                TeleMed is a secure and user-friendly platform that connects patients with licensed doctors
+                through online video consultations. Our mission is to make healthcare accessible,
+                affordable, and reliable for everyone, anywhere.
+            </p>
+        </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features container my-5">
-        <h2 class="fw-bold text-center mb-4">Why Choose TeleMed?</h2>
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-4">
-                <div class="card text-center py-4">
-                    <i class="bi bi-person-video3 fs-1 mb-3"></i>
+    <section class="features">
+        <div class="features-container">
+            <h2>Why Choose TeleMed?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="bi bi-person-video3"></i>
+                    </div>
                     <h4>Video Consultation</h4>
                     <p>Consult experienced doctors anytime, from the comfort of your home.</p>
                 </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="card text-center py-4">
-                    <i class="bi bi-shield-check fs-1 mb-3"></i>
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
                     <h4>Verified Doctors</h4>
                     <p>All our doctors are certified professionals with verified credentials.</p>
                 </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="card text-center py-4">
-                    <i class="bi bi-cash-coin fs-1 mb-3"></i>
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="bi bi-cash-coin"></i>
+                    </div>
                     <h4>Affordable Care</h4>
-                    <p>Quality healthcare shouldn’t break the bank — we make it affordable.</p>
+                    <p>Quality healthcare shouldn't break the bank — we make it affordable.</p>
                 </div>
             </div>
         </div>
@@ -202,7 +469,10 @@
 
     <!-- Quote Section -->
     <section class="quote-section">
-        <h3>"The greatest wealth is health."</h3>
+        <div class="quote-content">
+            <h3>"The greatest wealth is health."</h3>
+            <p class="quote-author">— Virgil</p>
+        </div>
     </section>
 
 </main>
