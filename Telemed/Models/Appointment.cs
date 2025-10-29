@@ -23,8 +23,8 @@
         public DateTime ScheduledAt { get; set; }
         public AppointmentStatus Status { get; set; } = AppointmentStatus.PendingPayment;
 
-        public string PatientNote { get; set; }
-        public string DoctorNote { get; set; }
+        public string? PatientNote { get; set; }
+        public string? DoctorNote { get; set; }
 
         // Optional linking
         public int? ScheduleId { get; set; }

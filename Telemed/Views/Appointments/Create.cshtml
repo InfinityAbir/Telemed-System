@@ -9,14 +9,14 @@
 
 <h2 class="mb-4">@ViewData["Title"]</h2>
 
-<form asp-action="Create" method="post" id="appointmentForm">
+<form asp-controller="Payments" asp-action="BookAppointment" method="post" id="appointmentForm">
     <!-- Doctor Selection -->
     <div class="mb-3">
         <label for="DoctorId" class="form-label">Select Doctor</label>
 
         @if (isDoctorLocked)
         {
-            <select id="DoctorId" name="DoctorId" class="form-select" disabled>
+            <select id="DoctorId" name="doctorId" class="form-select" disabled>
                 @foreach (var doc in doctors)
                 {
                     if (selectedDoctorId == doc.DoctorId)
@@ -29,11 +29,11 @@
                     }
                 }
             </select>
-            <input type="hidden" name="DoctorId" value="@selectedDoctorId" />
+            <input type="hidden" name="doctorId" value="@selectedDoctorId" />
         }
         else
         {
-            <select id="DoctorId" name="DoctorId" class="form-select" required>
+            <select id="DoctorId" name="doctorId" class="form-select" required>
                 <option value="">-- Choose a Doctor --</option>
                 @foreach (var doc in doctors)
                 {
@@ -72,7 +72,7 @@
     </div>
 
     <!-- Hidden field to store full datetime -->
-    <input type="hidden" asp-for="ScheduledAt" id="ScheduledAt" />
+    <input type="hidden" name="scheduledAt" id="ScheduledAt" />
 
     <button type="submit" class="btn btn-primary">Confirm Appointment</button>
     <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>

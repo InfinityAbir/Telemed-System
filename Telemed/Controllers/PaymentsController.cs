@@ -43,12 +43,10 @@ namespace Telemed.Controllers
             }
             else if (User.IsInRole("Doctor"))
             {
-                // Doctor sees only payments for their appointments
                 paymentsQuery = paymentsQuery.Where(p => p.Appointment.Doctor.UserId == userId);
             }
             else if (User.IsInRole("Patient"))
             {
-                // Patient sees only their own payments
                 paymentsQuery = paymentsQuery.Where(p => p.Appointment.Patient.UserId == userId);
             }
             else
@@ -136,8 +134,36 @@ namespace Telemed.Controllers
             _context.Payments.Update(payment);
             await _context.SaveChangesAsync();
 
-            // Redirect to payment page to show confirmation
+            // Redirect to StartPayment page to show confirmation
             return RedirectToAction("StartPayment", new { appointmentId = payment.AppointmentId });
+        }
+
+        // -------------------- BOOK APPOINTMENT --------------------
+        // This action replaces any "Details" redirection after booking
+        [Authorize(Roles = "Patient")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BookAppointment(int doctorId, DateTime scheduledAt)
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Forbid();
+
+            // Create appointment
+            var appointment = new Appointment
+            {
+                DoctorId = doctorId,
+                PatientId = _context.Patients.First(p => p.UserId == userId).PatientId,
+                ScheduledAt = scheduledAt,
+                Status = AppointmentStatus.PendingPayment
+            };
+
+            _context.Appointments.Add(appointment);
+            await _context.SaveChangesAsync();
+
+            // Create payment and redirect to StartPayment
+            await CreateForAppointment(appointment.AppointmentId);
+            return RedirectToAction("StartPayment", new { appointmentId = appointment.AppointmentId });
         }
 
         // -------------------- HELPER --------------------

@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Telemed.Models.Appointment>
+
+@{
+    ViewData["Title"] = "All Appointments (Admin)";
+}
+
+<div class="container py-5">
+    <h3 class="mb-4 text-primary fw-bold">
+        <i class="bi bi-calendar-check"></i> All Appointments
+    </h3>
+
+    <!-- Filters -->
+    <form id="filterForm" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" id="patientFilter" class="form-control" placeholder="Filter by Patient">
+        </div>
+        <div class="col-md-3">
+            <input type="text" id="doctorFilter" class="form-control" placeholder="Filter by Doctor">
+        </div>
+        <div class="col-md-3">
+            <input type="date" id="dateFilter" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <select id="statusFilter" class="form-select">
+                <option value="">All Status</option>
+                <option value="PendingPayment">Pending Payment</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+    </form>
+
+    <div class="row g-4" id="appointmentsContainer">
+        @foreach (var appt in Model)
+        {
+            <div class="col-md-6 col-lg-4 appointment-card"
+                 data-patient="@appt.Patient?.User?.FullName"
+                 data-doctor="@appt.Doctor?.User?.FullName"
+                 data-date="@appt.ScheduledAt.ToString("yyyy-MM-dd")"
+                 data-status="@appt.Status">
+                <div class="card shadow-sm border-0 rounded-4 h-100 hover-shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title mb-0">Appointment #@appt.AppointmentId</h5>
+                            <span class="badge
+                                    @(appt.Status == Telemed.Models.AppointmentStatus.Approved ? "bg-success" :
+                                                                    appt.Status == Telemed.Models.AppointmentStatus.PendingPayment ? "bg-warning text-dark" :
+                                                                    appt.Status == Telemed.Models.AppointmentStatus.Rejected ? "bg-danger" :
+                                                                    "bg-secondary")">
+                            @appt.Status
+                        </span>
+                    </div>
+                    <p class="mb-1"><strong>Patient:</strong> @appt.Patient?.User?.FullName</p>
+                    <p class="mb-1"><strong>Doctor:</strong> @appt.Doctor?.User?.FullName (@appt.Doctor?.Specialization)</p>
+                    <p class="mb-1"><strong>Scheduled:</strong> @appt.ScheduledAt.ToString("yyyy-MM-dd HH:mm")</p>
+
+                        
+                    </div>
+                </div>
+            </div>
+                }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info mt-4 text-center">
+            No appointments found.
+        </div>
+    }
+</div>
+
+<!-- Styles -->
+<style>
+    .hover-shadow:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+</style>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Filtering Script -->
+@section Scripts {
+    <script>
+        const patientInput = document.getElementById('patientFilter');
+        const doctorInput = document.getElementById('doctorFilter');
+        const dateInput = document.getElementById('dateFilter');
+        const statusInput = document.getElementById('statusFilter');
+        const cards = document.querySelectorAll('.appointment-card');
+
+        function filterAppointments() {
+            const patientVal = patientInput.value.toLowerCase();
+            const doctorVal = doctorInput.value.toLowerCase();
+            const dateVal = dateInput.value;
+            const statusVal = statusInput.value;
+
+            cards.forEach(card => {
+                const patient = card.dataset.patient.toLowerCase();
+                const doctor = card.dataset.doctor.toLowerCase();
+                const date = card.dataset.date;
+                const status = card.dataset.status;
+
+                const match =
+                    (patient.includes(patientVal)) &&
+                    (doctor.includes(doctorVal)) &&
+                    (dateVal === "" || date === dateVal) &&
+                    (statusVal === "" || status === statusVal);
+
+                card.style.display = match ? "block" : "none";
+            });
+        }
+
+        patientInput.addEventListener('input', filterAppointments);
+        doctorInput.addEventListener('input', filterAppointments);
+        dateInput.addEventListener('change', filterAppointments);
+        statusInput.addEventListener('change', filterAppointments);
+    </script>
+}

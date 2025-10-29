@@ -275,6 +275,23 @@ public class AppointmentsController : Controller
         return View(appointment);
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<IActionResult> AdminIndex()
+    {
+        var appointments = await _context.Appointments
+            .Include(a => a.Patient)
+                .ThenInclude(p => p.User)
+            .Include(a => a.Doctor)
+                .ThenInclude(d => d.User)
+            .OrderByDescending(a => a.ScheduledAt)
+            .ToListAsync();
+
+        // Ensure the view is the modern AdminIndex
+        return View("AdminIndex", appointments);
+    }
+
+
     [Authorize(Roles = "Patient")]
     [HttpGet]
     public async Task<IActionResult> Book(int? doctorId)
