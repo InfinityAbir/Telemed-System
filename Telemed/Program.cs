@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Telemed.Models;
+using Telemed.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

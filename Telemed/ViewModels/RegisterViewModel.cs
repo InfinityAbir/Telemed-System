@@ -1,14 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Telemed.ViewModels
 {
-    /// <summary>
-    /// ViewModel for user registration.
-    /// Includes fields for both Patient and Doctor registration.
-    /// Doctor-specific fields are optional for patient registrations.
-    /// </summary>
-    public class RegisterViewModel
+    public class RegisterViewModel : IValidatableObject
     {
         [Required]
         [Display(Name = "Full name")]
@@ -31,16 +27,11 @@ namespace Telemed.ViewModels
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; } = string.Empty;
 
-        /// <summary>
-        /// "Patient" or "Doctor".
-        /// </summary>
         [Required]
         [Display(Name = "Register as")]
         public string RegisterAs { get; set; } = "Patient";
 
-        //
         // Patient fields
-        //
         [DataType(DataType.Date)]
         [Display(Name = "Date of birth")]
         public DateTime? DOB { get; set; }
@@ -54,13 +45,10 @@ namespace Telemed.ViewModels
         [StringLength(20, ErrorMessage = "Contact number cannot exceed 20 characters.")]
         public string? ContactNumber { get; set; }
 
-        //
-        // Doctor fields (only used when RegisterAs == "Doctor")
-        //
-        [Required(ErrorMessage = "BM&DC Registration Number is required.")]
+        // Doctor fields
         [Display(Name = "BM&DC Registration Number")]
         [StringLength(50, ErrorMessage = "BM&DC number cannot exceed 50 characters.")]
-        public string? BMDCNumber { get; set; }  // ✅ New mandatory field
+        public string? BMDCNumber { get; set; }
 
         [Display(Name = "Specialization")]
         [StringLength(150, ErrorMessage = "Specialization cannot exceed 150 characters.")]
@@ -72,11 +60,21 @@ namespace Telemed.ViewModels
 
         [Display(Name = "Consultation Fee (BDT)")]
         [Range(0, 100000, ErrorMessage = "Consultation fee must be between 0 and 100,000.")]
-        public decimal ConsultationFee { get; set; } = 0;
+        public decimal? ConsultationFee { get; set; } = 0;
 
-        // Optional: a short bio or clinic address
         [Display(Name = "Short bio / clinic address")]
         [StringLength(1000, ErrorMessage = "Bio / clinic address cannot exceed 1000 characters.")]
         public string? Bio { get; set; }
+
+        // Conditional validation
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (RegisterAs == "Doctor" && string.IsNullOrWhiteSpace(BMDCNumber))
+            {
+                yield return new ValidationResult(
+                    "BM&DC Registration Number is required for doctors.",
+                    new[] { nameof(BMDCNumber) });
+            }
+        }
     }
 }

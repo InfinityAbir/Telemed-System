@@ -24,7 +24,7 @@
                             <h5 class="card-title mb-2">Appointment #@item.Appointment.AppointmentId</h5>
                             <p class="mb-1"><strong>Doctor:</strong> @item.Appointment.Doctor.User.FullName</p>
                             <p class="mb-1"><strong>Patient:</strong> @item.Appointment.Patient.User.FullName</p>
-                            <p class="mb-1"><strong>Amount:</strong> $@item.Amount</p>
+                            <p class="mb-1"><strong>Amount:</strong> ৳@item.Amount</p>
                             <p class="mb-1">
                                 <strong>Status:</strong>
                                 @if (item.Status == Telemed.Models.PaymentStatus.Paid)

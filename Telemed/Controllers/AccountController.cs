@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Telemed.Models;
@@ -15,19 +17,22 @@ namespace Telemed.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly IEmailSender _emailSender; // Email sender service
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             ApplicationDbContext context,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
             _environment = environment;
+            _emailSender = emailSender;
         }
 
         // ---------------- LOGIN / REGISTER / LOGOUT ----------------
@@ -132,7 +137,7 @@ namespace Telemed.Controllers
                     BMDCNumber = model.BMDCNumber,
                     Qualification = model.Qualification,
                     IsApproved = false,
-                    ConsultationFee = model.ConsultationFee
+                    ConsultationFee = model.ConsultationFee ?? 0 // fallback to 0 if null
                 };
                 _context.Doctors.Add(doctor);
             }
@@ -212,11 +217,9 @@ namespace Telemed.Controllers
                 var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.UserId == user.Id);
                 if (doctor != null)
                 {
-                    // Update consultation fee
                     if (ConsultationFee.HasValue)
                         doctor.ConsultationFee = ConsultationFee.Value;
 
-                    // Update BM&DC number from form
                     if (Request.Form.ContainsKey("BMDCNumber"))
                         doctor.BMDCNumber = Request.Form["BMDCNumber"];
 
@@ -273,6 +276,116 @@ namespace Telemed.Controllers
             var result = await _userManager.ChangePasswordAsync(user, CurrentPassword, NewPassword);
             TempData["Message"] = result.Succeeded ? "Password changed successfully!" : "Failed to change password.";
             return RedirectToAction("Profile");
+        }
+
+        // ---------------- FORGOT PASSWORD ----------------
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["Message"] = "Please enter your email.";
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                TempData["Message"] = "If an account with this email exists, a reset link will be sent.";
+                return View();
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = Url.Action("ResetPassword", "Account",
+                new { email = user.Email, token = token }, Request.Scheme);
+
+            // Modern HTML email
+            var htmlMessage = $@"
+    <!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Reset Password - TeleMed</title>
+        <style>
+            body {{ font-family: Arial, sans-serif; background-color: #f4f4f7; margin: 0; padding: 0; }}
+            .email-container {{ max-width: 600px; margin: 30px auto; background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }}
+            .logo {{ font-size: 2rem; font-weight: bold; color: #007bff; text-align: center; margin-bottom: 20px; }}
+            .content {{ font-size: 16px; color: #333; line-height: 1.5; }}
+            .btn {{ display: inline-block; padding: 12px 20px; margin: 20px 0; background-color: #007bff; color: #fff !important; text-decoration: none; border-radius: 8px; font-weight: bold; }}
+            .footer {{ font-size: 12px; color: #999; text-align: center; margin-top: 20px; }}
+        </style>
+    </head>
+    <body>
+        <div class='email-container'>
+            <div class='logo'>TeleMed</div>
+            <div class='content'>
+                <p>Hello {user.FullName},</p>
+                <p>You have requested to reset your password for your TeleMed account.</p>
+                <p style='text-align:center;'>
+                    <a href='{HtmlEncoder.Default.Encode(resetLink)}' class='btn'>Reset Password</a>
+                </p>
+                <p>If you did not request this, please ignore this email.</p>
+                <p>Thanks,<br>TeleMed Team</p>
+            </div>
+            <div class='footer'>&copy; {DateTime.Now.Year} TeleMed. All rights reserved.</div>
+        </div>
+    </body>
+    </html>";
+
+            // Send email
+            await _emailSender.SendEmailAsync(user.Email, "Reset Password - TeleMed", htmlMessage);
+
+            TempData["Message"] = "If an account with this email exists, a reset link will be sent.";
+            return View();
+        }
+
+
+        // ---------------- RESET PASSWORD ----------------
+        
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null) return RedirectToAction("Login");
+            var model = new ResetPasswordViewModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                TempData["Message"] = "Password reset successful.";
+                return RedirectToAction("Login");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                TempData["Message"] = "Password reset successful.";
+                return RedirectToAction("Login");
+            }
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            return View(model);
         }
     }
 }
