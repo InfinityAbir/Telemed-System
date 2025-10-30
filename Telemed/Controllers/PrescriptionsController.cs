@@ -103,7 +103,7 @@ namespace Telemed.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Generate PDF (for doctor and patient)
+        // Generate PDF (for doctor and patient) with logo and thank-you message
         public IActionResult Pdf(int id)
         {
             var p = _context.Prescriptions
@@ -117,28 +117,76 @@ namespace Telemed.Controllers
 
             if (p == null) return NotFound();
 
+            // Path for TeleMed logo (wwwroot/images/telemed_logo.png)
+            var logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "telemed_logo.png");
+
             var doc = Document.Create(container =>
             {
                 container.Page(page =>
                 {
                     page.Size(PageSizes.A4);
-                    page.Margin(20);
-                    page.Content().Column(col =>
+                    page.Margin(40);
+                    page.DefaultTextStyle(x => x.FontSize(12).FontFamily("Helvetica"));
+
+                    // Header with logo and title
+                    page.Header().Row(row =>
                     {
-                        col.Item().Text($"Prescription #{p.PrescriptionId}").FontSize(18).SemiBold();
-                        col.Item().Text($"Patient: {p.Appointment.Patient.User.FullName}");
+                        if (System.IO.File.Exists(logoPath))
+                        {
+                            row.ConstantItem(60).Image(logoPath);
+                        }
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            col.Item().Text("TeleMed - Digital Prescription")
+                                .FontSize(20).SemiBold().FontColor(Colors.Blue.Medium);
+                            col.Item().Text("Online Healthcare & Consultation Platform")
+                                .FontSize(10).FontColor(Colors.Grey.Darken1);
+                        });
+                    });
+
+                    // Prescription content
+                    page.Content().PaddingVertical(20).Column(col =>
+                    {
+                        col.Spacing(8);
+
+                        col.Item().Text($"Prescription ID: {p.PrescriptionId}").Bold();
+                        col.Item().Text($"Date Issued: {p.CreatedAt:yyyy-MM-dd}");
+                        col.Item().LineHorizontal(1).LineColor(Colors.Grey.Lighten2);
+
+                        col.Item().Text($"Patient: {p.Appointment.Patient.User.FullName}")
+                            .FontSize(14).SemiBold();
                         col.Item().Text($"Doctor: {p.Appointment.Doctor.User.FullName} ({p.Appointment.Doctor.Specialization})");
+                        col.Item().LineHorizontal(1).LineColor(Colors.Grey.Lighten2);
+
+                        col.Item().Text("Prescription Details")
+                            .FontSize(14).SemiBold().Underline();
+
                         col.Item().Text($"Medicine: {p.MedicineName}");
                         col.Item().Text($"Dosage: {p.Dosage}");
                         col.Item().Text($"Duration: {p.Duration}");
-                        col.Item().Text($"Notes: {p.Notes}");
-                        col.Item().Text($"Date: {p.CreatedAt:yyyy-MM-dd}");
+
+                        if (!string.IsNullOrWhiteSpace(p.Notes))
+                        {
+                            col.Item().Text("Notes:").FontSize(13).SemiBold();
+                            col.Item().Text(p.Notes);
+                        }
+
+                        col.Item().PaddingTop(30).AlignCenter().Text("Thank you for using TeleMed!")
+                            .FontSize(13).Italic().FontColor(Colors.Blue.Medium);
                     });
+
+                    // Footer
+                    page.Footer()
+                        .AlignCenter()
+                        .Text($"© {DateTime.Now.Year} TeleMed | Doctor: {p.Appointment.Doctor.User.FullName}")
+                        .FontSize(10)
+                        .FontColor(Colors.Grey.Darken1);
                 });
             });
 
             var pdfBytes = doc.GeneratePdf();
-            return File(pdfBytes, "application/pdf", $"prescription_{id}.pdf");
+            return File(pdfBytes, "application/pdf", $"Prescription_{p.PrescriptionId}.pdf");
         }
 
         // POST: Update prescription via AJAX (only for Doctor)
