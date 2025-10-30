@@ -102,10 +102,16 @@ namespace Telemed.Controllers
             return View(pendingSchedules);
         }
 
+        // ---------------------------
+        // Fixed: Individual Approve Schedule
+        // ---------------------------
         [HttpPost]
-        public async Task<IActionResult> ApproveSchedule(int id)
+        public async Task<IActionResult> ApproveSchedule([FromBody] ScheduleActionRequest request)
         {
-            var schedule = await _context.DoctorSchedules.FindAsync(id);
+            if (request == null || request.ScheduleId <= 0)
+                return Json(new { success = false, message = "Invalid schedule." });
+
+            var schedule = await _context.DoctorSchedules.FindAsync(request.ScheduleId);
             if (schedule == null)
                 return Json(new { success = false, message = "Schedule not found." });
 
@@ -117,9 +123,12 @@ namespace Telemed.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RejectSchedule(int id)
+        public async Task<IActionResult> RejectSchedule([FromBody] ScheduleActionRequest request)
         {
-            var schedule = await _context.DoctorSchedules.FindAsync(id);
+            if (request == null || request.ScheduleId <= 0)
+                return Json(new { success = false, message = "Invalid schedule." });
+
+            var schedule = await _context.DoctorSchedules.FindAsync(request.ScheduleId);
             if (schedule == null)
                 return Json(new { success = false, message = "Schedule not found." });
 
@@ -128,6 +137,7 @@ namespace Telemed.Controllers
 
             return Json(new { success = true, message = "Schedule rejected successfully." });
         }
+
 
         // ---------------------------
         // Approve All & Reject All Schedules
@@ -172,7 +182,6 @@ namespace Telemed.Controllers
 
             return Json(new { success = true, message = "All pending schedules rejected successfully." });
         }
-
 
         // ---------------------------
         // Edit Schedule
@@ -300,6 +309,3 @@ namespace Telemed.Controllers
         }
     }
 }
-
-
-
