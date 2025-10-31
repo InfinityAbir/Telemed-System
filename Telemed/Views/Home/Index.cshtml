@@ -1,224 +1,300 @@
-﻿@{
-    ViewData["Title"] = "TeleMed - Your Trusted Online Healthcare Partner";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<style>
-    body {
-        background: #ffffff !important;
-        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-        margin: 0;
-        padding: 0;
-        color: #1a1a1a;
-    }
-
-    /* Hero Section - Modern Doctime Style */
-    .hero {
-        background: linear-gradient(135deg, #0066FF 0%, #00D4AA 100%);
-        color: white;
-        padding: 100px 20px 120px;
-        position: relative;
-        overflow: hidden;
-    }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
-            border-radius: 50%;
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeleMed - Your Trusted Online Healthcare Partner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -5%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent);
-            border-radius: 50%;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #1a1a1a;
+            background: #ffffff;
+            line-height: 1.6;
         }
 
-    .hero-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-    }
-
-    .hero .brand-header {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 30px;
-    }
-
-        .hero .brand-header i {
-            font-size: 2.5rem;
-            color: #FF6B6B;
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-
-    @@keyframes heartbeat {
-        0%, 100%
-
-    {
-        transform: scale(1);
-    }
-
-    25% {
-        transform: scale(1.1);
-    }
-
-    50% {
-        transform: scale(1);
-    }
-
-    }
-
-    .hero .brand-header h1 {
-        font-size: 3rem;
-        font-weight: 800;
-        margin: 0;
-        letter-spacing: -1px;
-    }
-
-    .hero .lead {
-        font-size: 1.4rem;
-        margin: 20px auto;
-        font-weight: 500;
-        max-width: 700px;
-        opacity: 0.95;
-    }
-
-    .hero .tagline {
-        font-size: 1.15rem;
-        font-style: italic;
-        opacity: 0.9;
-        margin-bottom: 40px;
-    }
-
-    .consult-btn {
-        background: white;
-        color: #0066FF;
-        border: none;
-        border-radius: 50px;
-        padding: 16px 48px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        cursor: pointer;
-        display: inline-block;
-        text-decoration: none;
-    }
-
-        .consult-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-            color: #0066FF;
-            background: #f8f9fa;
-        }
-
-        .consult-btn:active {
-            transform: translateY(-1px);
-        }
-
-    /* About Section */
-    .about-section {
-        background: linear-gradient(135deg, #F9FAFB 0%, #E8F4FF 100%);
-        padding: 80px 20px;
-        margin: 0;
-        border-radius: 0;
-    }
-
-    .about-content {
-        max-width: 900px;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .about-section h2 {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #1a1a1a;
-        margin-bottom: 24px;
-        letter-spacing: -0.5px;
-    }
-
-    .about-section p {
-        font-size: 1.15rem;
-        line-height: 1.8;
-        color: #555;
-        margin: 0;
-    }
-
-    /* Features Section */
-    .features {
-        padding: 100px 20px;
-        margin: 0;
-        background: #ffffff;
-    }
-
-    .features-container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .features h2 {
-        font-size: 2.5rem;
-        font-weight: 800;
-        text-align: center;
-        margin-bottom: 60px;
-        color: #1a1a1a;
-        letter-spacing: -0.5px;
-    }
-
-    .features-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-    }
-
-    .feature-card {
-        background: white;
-        border: 2px solid #f0f0f0;
-        border-radius: 24px;
-        padding: 40px 32px;
-        text-align: center;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-    }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
+        /* Navigation */
+        .navbar {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #0066FF, #00D4AA);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            z-index: 1000;
         }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: #0066FF;
-            box-shadow: 0 12px 40px rgba(0, 102, 255, 0.15);
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-            .feature-card:hover::before {
-                transform: scaleX(1);
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0066FF;
+        }
+
+            .logo i {
+                font-size: 1.8rem;
+                color: #00D4AA;
             }
 
-        .feature-card .icon-wrapper {
+        .nav-btn {
+            background: #0066FF;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .nav-btn:hover {
+                background: #0052cc;
+                transform: translateY(-2px);
+            }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0066FF 0%, #00D4AA 100%);
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -10%;
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+                border-radius: 50%;
+            }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #0066FF;
+            padding: 16px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+            .btn-secondary:hover {
+                background: white;
+                color: #0066FF;
+            }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-visual {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .hero-visual::before {
+                content: '';
+                position: absolute;
+                width: 150%;
+                height: 150%;
+                background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+                animation: shine 3s infinite;
+            }
+
+        @@keyframes shine {
+            0%
+
+        {
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+
+        100% {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+
+        }
+
+        /* Stats Section */
+        .stats {
+            background: white;
+            padding: 60px 20px;
+            margin-top: -40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0066FF, #00D4AA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 20px;
+            background: #F9FAFB;
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+            .section-header h2 {
+                font-size: 2.8rem;
+                font-weight: 800;
+                color: #1a1a1a;
+                margin-bottom: 15px;
+            }
+
+            .section-header p {
+                font-size: 1.1rem;
+                color: #666;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+            .service-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 40px rgba(0,102,255,0.15);
+                border-color: #0066FF;
+            }
+
+        .service-icon {
             width: 80px;
             height: 80px;
             background: linear-gradient(135deg, #E8F4FF, #E0F9F4);
@@ -226,253 +302,487 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 24px;
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover .icon-wrapper {
-            background: linear-gradient(135deg, #0066FF, #00D4AA);
-        }
-
-        .feature-card .icon-wrapper i {
+            margin: 0 auto 20px;
             font-size: 2.5rem;
-            background: linear-gradient(135deg, #0066FF, #00D4AA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #0066FF;
             transition: all 0.3s ease;
         }
 
-        .feature-card:hover .icon-wrapper i {
+        .service-card:hover .service-icon {
+            background: linear-gradient(135deg, #0066FF, #00D4AA);
             color: white;
-            -webkit-text-fill-color: white;
         }
 
-        .feature-card h4 {
+        .service-card h3 {
             font-size: 1.4rem;
             font-weight: 700;
             color: #1a1a1a;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
-        .feature-card p {
-            font-size: 1rem;
-            line-height: 1.6;
+        .service-card p {
             color: #666;
-            margin: 0;
+            line-height: 1.6;
         }
 
-    /* Quote Section */
-    .quote-section {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-        padding: 80px 20px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        margin: 0;
-    }
-
-        .quote-section::before {
-            content: '"';
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 15rem;
-            color: rgba(255, 255, 255, 0.05);
-            font-family: Georgia, serif;
-            line-height: 1;
+        /* How It Works */
+        .how-it-works {
+            padding: 100px 20px;
+            background: white;
         }
 
-    .quote-content {
-        max-width: 900px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 2;
-    }
-
-    .quote-section h3 {
-        font-size: 2.2rem;
-        font-weight: 600;
-        font-style: italic;
-        color: white;
-        margin: 0;
-        line-height: 1.5;
-    }
-
-    .quote-section .quote-author {
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.7);
-        margin-top: 20px;
-        font-style: normal;
-    }
-
-    /* Call to Action Section */
-    .cta-section {
-        background: linear-gradient(135deg, #0066FF 0%, #00D4AA 100%);
-        padding: 60px 20px;
-        text-align: center;
-        margin: 0;
-    }
-
-    .cta-content {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    .cta-section h3 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 16px;
-    }
-
-    .cta-section p {
-        font-size: 1.1rem;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 30px;
-    }
-
-    .cta-btn {
-        background: white;
-        color: #0066FF;
-        border: none;
-        border-radius: 50px;
-        padding: 14px 40px;
-        font-size: 1rem;
-        font-weight: 700;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        display: inline-block;
-        text-decoration: none;
-    }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-            background: #f8f9fa;
-            color: #0066FF;
+        .steps-container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-    /* Responsive Design */
-    @@media (max-width: 768px) {
-        .hero
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
 
-    {
-        padding: 60px 20px 80px;
-    }
+        .step-card {
+            position: relative;
+            text-align: center;
+            padding: 30px 20px;
+        }
 
-    .hero .brand-header h1 {
-        font-size: 2.2rem;
-    }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0066FF, #00D4AA);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
 
-    .hero .lead {
-        font-size: 1.1rem;
-    }
+        .step-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
 
-    .about-section h2,
-    .features h2 {
-        font-size: 2rem;
-    }
+        .step-card p {
+            color: #666;
+            line-height: 1.6;
+        }
 
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #F9FAFB 0%, #E8F4FF 100%);
+        }
 
-    .quote-section h3 {
-        font-size: 1.6rem;
-    }
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    }
-</style>
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
 
-<main role="main">
+        .testimonial-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .stars {
+            color: #FFB800;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-text {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066FF, #00D4AA);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .author-info p {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #0066FF 0%, #00D4AA 100%);
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 60px 20px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+            .footer-section ul li {
+                margin-bottom: 10px;
+            }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+            .footer-section a:hover {
+                color: #00D4AA;
+            }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .hero-container
+
+        {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-visual {
+            height: 300px;
+        }
+
+        .stats-container {
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+        }
+
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            justify-content: center;
+        }
+
+        }
+    </style>
+</head>
+<body>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <div class="brand-header">
-                <i class="fas fa-heartbeat"></i>
-                <h1>TeleMed</h1>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Healthcare at Your Fingertips</h1>
+                <p>Connect with certified doctors online. Get expert medical advice, prescriptions, and care from the comfort of your home.</p>
+                <div class="hero-buttons">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Admin"))
+                        {
+                            <a href="@Url.Action("Report", "Admin")" class="btn-primary">
+                                <i class="bi bi-bar-chart-line"></i>
+                                View Report
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Doctors")" class="btn-primary">
+                                <i class="bi bi-calendar-check"></i>
+                                Book Consultation
+                            </a>
+
+                            <a href="#how-it-works" class="btn-secondary">
+                                <i class="bi bi-play-circle"></i>
+                                How It Works
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Login", "Account")" class="btn-primary">
+                            <i class="bi bi-calendar-check"></i>
+                            Book Consultation
+                        </a>
+
+                        <a href="#how-it-works" class="btn-secondary">
+                            <i class="bi bi-play-circle"></i>
+                            How It Works
+                        </a>
+                    }
+                </div>
+
+
             </div>
-            <p class="lead">Your trusted platform for online medical consultations</p>
-            <p class="tagline">"Bringing healthcare closer to you."</p>
+            <div class="hero-image">
+                <div class="hero-visual">
+                    <i class="fas fa-user-md"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Verified Doctors</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Happy Patients</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Available Support</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="services-container">
+            <div class="section-header">
+                <h2>Our Services</h2>
+                <p>Comprehensive healthcare solutions designed for your convenience and well-being</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="bi bi-camera-video"></i>
+                    </div>
+                    <h3>Video Consultation</h3>
+                    <p>Connect with doctors via secure HD video calls for real-time medical advice</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="bi bi-prescription2"></i>
+                    </div>
+                    <h3>E-Prescriptions</h3>
+                    <p>Get digital prescriptions sent directly to your phone or email instantly</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="bi bi-calendar-heart"></i>
+                    </div>
+                    <h3>Easy Scheduling</h3>
+                    <p>Book appointments at your convenience with our flexible scheduling system</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Your health data is protected with bank-level encryption and security</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                    <h3>Affordable Pricing</h3>
+                    <p>Quality healthcare that fits your budget without compromising on care</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="bi bi-journal-medical"></i>
+                    </div>
+                    <h3>Medical Records</h3>
+                    <p>Access your complete medical history anytime, anywhere securely</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="steps-container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Get started with TeleMed in three simple steps</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Choose Your Doctor</h3>
+                    <p>Browse our network of certified doctors and select the specialist that fits your needs</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Book Appointment</h3>
+                    <p>Schedule a consultation at your preferred time slot and receive instant confirmation</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Start Consultation</h3>
+                    <p>Connect with your doctor via video call and get expert medical advice from home</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="testimonials-container">
+            <div class="section-header">
+                <h2>What Our Patients Say</h2>
+                <p>Real stories from people who trust TeleMed for their healthcare needs</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"TeleMed made it so easy to get medical help when I needed it most. The doctor was professional and caring. Highly recommend!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SA</div>
+                        <div class="author-info">
+                            <h4>Sarah Ahmed</h4>
+                            <p>Patient</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"As a busy professional, TeleMed saves me so much time. I can consult with doctors without leaving my office. Game changer!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MK</div>
+                        <div class="author-info">
+                            <h4>Mohammed Khan</h4>
+                            <p>Patient</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"The convenience and quality of care on TeleMed is outstanding. I got my prescription within minutes. Thank you!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">FR</div>
+                        <div class="author-info">
+                            <h4>Fatima Rahman</h4>
+                            <p>Patient</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-container text-center py-5">
+            <h2>Ready to Get Started?</h2>
+            <p>Join thousands of satisfied patients who trust TeleMed for their healthcare needs.</p>
 
             @if (User.Identity.IsAuthenticated)
             {
                 if (User.IsInRole("Admin"))
                 {
-                    <a href="@Url.Action("Report", "Admin")" class="consult-btn">
+                    <a href="@Url.Action("Report", "Admin")" class="btn btn-primary">
                         View Report
                     </a>
                 }
                 else
                 {
-                    <a href="@Url.Action("Index", "Doctors")" class="consult-btn">
-                        Book Consultation
+                    <a href="@Url.Action("Index", "Doctors")" class="btn btn-primary">
+                        Book Your Appointment Now
                     </a>
                 }
             }
             else
             {
-                <a href="@Url.Action("Login", "Account")" class="consult-btn">
-                    Book Consultation
+                <a href="@Url.Action("Login", "Account")" class="btn btn-primary">
+                    Book Your Appointment Now
                 </a>
             }
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about-section">
-        <div class="about-content">
-            <h2>About TeleMed</h2>
-            <p>
-                TeleMed is a secure and user-friendly platform that connects patients with licensed doctors
-                through online video consultations. Our mission is to make healthcare accessible,
-                affordable, and reliable for everyone, anywhere.
-            </p>
-        </div>
-    </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="features-container">
-            <h2>Why Choose TeleMed?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="icon-wrapper">
-                        <i class="bi bi-person-video3"></i>
-                    </div>
-                    <h4>Video Consultation</h4>
-                    <p>Consult experienced doctors anytime, from the comfort of your home.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="icon-wrapper">
-                        <i class="bi bi-shield-check"></i>
-                    </div>
-                    <h4>Verified Doctors</h4>
-                    <p>All our doctors are certified professionals with verified credentials.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="icon-wrapper">
-                        <i class="bi bi-cash-coin"></i>
-                    </div>
-                    <h4>Affordable Care</h4>
-                    <p>Quality healthcare shouldn't break the bank — we make it affordable.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quote Section -->
-    <section class="quote-section">
-        <div class="quote-content">
-            <h3>"The greatest wealth is health."</h3>
-            <p class="quote-author">— Virgil</p>
-        </div>
-    </section>
-
-</main>
+    
+</body>
+</html>
