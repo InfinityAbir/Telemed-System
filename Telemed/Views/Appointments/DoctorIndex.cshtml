@@ -83,6 +83,17 @@
                                 </div>
                             }
 
+                            <!-- View Patient Uploads button -->
+                            @if (item.Status != AppointmentStatus.PendingPayment)
+                            {
+                                <div class="mt-3">
+                                    <a href="@Url.Action("PatientUploads", "Prescriptions", new { appointmentId = item.AppointmentId })"
+                                       class="btn btn-outline-primary w-100">
+                                        <i class="bi bi-upload"></i> View Patient Uploads
+                                    </a>
+                                </div>
+                            }
+
                         </div>
                     </div>
                 </div>

@@ -13,6 +13,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Prescription> Prescriptions { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
+    public DbSet<PatientPrescriptionUpload> PatientPrescriptionUploads { get; set; }
+
 
 
     protected override void OnModelCreating(ModelBuilder builder)

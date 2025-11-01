@@ -223,6 +223,42 @@ namespace Telemed.Controllers
             await _context.SaveChangesAsync();
             return Json(new { success = true });
         }
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> PatientUploads(int appointmentId)
+        {
+            // Get current doctor ID
+            var doctorId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(doctorId))
+                return Forbid();
+
+            // Fetch appointment with patient and doctor
+            var appointment = await _context.Appointments
+                .Include(a => a.Patient)
+                    .ThenInclude(p => p.User)
+                .Include(a => a.Doctor)
+                    .ThenInclude(d => d.User)
+                .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
+
+            if (appointment == null || appointment.Doctor == null || appointment.Patient == null)
+                return NotFound();
+
+            // Ensure the logged-in doctor is the owner
+            if (appointment.Doctor.UserId != doctorId)  // assuming Doctor entity has UserId
+                return Forbid();
+
+            // Get all uploads of the patient
+            var uploads = await _context.PatientPrescriptionUploads
+                .Where(u => u.PatientId == appointment.Patient.User.Id)
+                .OrderByDescending(u => u.UploadDate)
+                .ToListAsync();
+
+            ViewBag.PatientName = appointment.Patient.User.FullName;
+            ViewBag.AppointmentId = appointment.AppointmentId;
+
+            return View(uploads);
+        }
+
+
 
         private bool PrescriptionExists(int id)
         {
